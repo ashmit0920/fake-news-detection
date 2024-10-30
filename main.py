@@ -17,13 +17,7 @@ nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 
 # Sample Data 
-data = pd.DataFrame({
-    'text': [
-        'This is a true news article about an event.',
-        'This is a fake news article that misleads people.',
-    ],
-    'label': [0, 1]
-})
+data = pd.read_csv("final_dataset.csv")
 
 # Preprocessing the text data
 def preprocess_text(text):
@@ -37,15 +31,15 @@ def preprocess_text(text):
     text = ' '.join([word for word in text.split() if word not in stop_words])
     return text
 
-data['text'] = data['text'].apply(preprocess_text)
+data['title'] = data['title'].apply(preprocess_text)
 
 # Tokenize and pad sequences
 tokenizer = Tokenizer()
-tokenizer.fit_on_texts(data['text'])
+tokenizer.fit_on_texts(data['title'])
 vocab_size = len(tokenizer.word_index) + 1  # +1 for padding token
 
 # Convert texts to sequences
-sequences = tokenizer.texts_to_sequences(data['text'])
+sequences = tokenizer.texts_to_sequences(data['title'])
 
 # Pad sequences to ensure uniform input length
 max_length = 100  # will adjust this based on average length of articles
